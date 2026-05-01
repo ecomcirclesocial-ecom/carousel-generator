@@ -6,3 +6,4 @@ click
 python-dotenv
 aiohttp
 rich
+google-genai

@@ -9,11 +9,10 @@ cache/
 # Output (carruseles generados — excepto examples/)
 output/
 
-# Foto personal del owner — los users contribuyen las suyas
-assets/nain.jpg
-assets/*.jpeg
-assets/*.jpg
-assets/*.png
+# Fotos en assets/ (el owner usa la suya, los users la suya)
+assets/**/*.jpg
+assets/**/*.jpeg
+assets/**/*.png
 !assets/.gitkeep
 
 # Presets personales (usuarios scrapean sus propios creadores)

@@ -2,10 +2,11 @@ import os
 from pathlib import Path
 from dotenv import load_dotenv
 
-ROOT = Path(__file__).parent
+ROOT: Path = Path(__file__).parent
 load_dotenv(ROOT / ".env")
 
 APIFY_TOKEN = os.getenv("APIFY_TOKEN")
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 
 PRESETS_DIR = ROOT / "presets"
 CACHE_SCRAPED = ROOT / "cache" / "scraped"

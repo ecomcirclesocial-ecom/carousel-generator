@@ -117,10 +117,11 @@ def preset_delete(name):
 @click.option("--tema", required=True, help="Tema del carrusel (cualquier nicho).")
 @click.option("--cta", "cta_word", required=True, help="Palabra clave del CTA (ej: DROPI, GUIA, SCRIPT).")
 @click.option("--photo", "photo_path", default=None, help="Path a foto de fondo (opcional).")
+@click.option("--generate-photo", is_flag=True, help="Genera la foto con Nano Banana acorde al tema.")
 @click.option("--idioma", default="es", show_default=True, type=click.Choice(["es", "en"]))
 @click.option("--handle", default="@ecomcircle", show_default=True)
 @click.option("--out", "out_dir", default=None)
-def generate_cmd(preset_name, tema, cta_word, photo_path, idioma, handle, out_dir):
+def generate_cmd(preset_name, tema, cta_word, photo_path, generate_photo, idioma, handle, out_dir):
     """Genera un carrusel completo (Hook→Dolor→Valor→Recap→CTA)."""
     try:
         ensure_available()
@@ -134,10 +135,22 @@ def generate_cmd(preset_name, tema, cta_word, photo_path, idioma, handle, out_di
         sys.exit(1)
     preset_data = json.loads(path.read_text())
 
-    photo = Path(photo_path) if photo_path else None
-    if photo and not photo.exists():
-        console.print(f"[red]✗ No existe la foto: {photo}[/red]")
-        sys.exit(1)
+    photo = None
+    if generate_photo:
+        from nano_banana import generate_topic_photo, NanoBananaError
+        from config import ROOT
+        console.print(f"[cyan]→ Generando foto con Nano Banana acorde al tema...[/cyan]")
+        try:
+            photo = generate_topic_photo(tema, ROOT / "assets" / "generated")
+            console.print(f"  ✓ Foto generada: {photo}")
+        except NanoBananaError as e:
+            console.print(f"[red]✗ Nano Banana falló: {e}[/red]")
+            sys.exit(1)
+    elif photo_path:
+        photo = Path(photo_path)
+        if not photo.exists():
+            console.print(f"[red]✗ No existe la foto: {photo}[/red]")
+            sys.exit(1)
 
     console.print(f"[cyan]→ Generando copy con claude (tema: {tema}, cta: {cta_word})...[/cyan]")
     out_path = Path(out_dir) if out_dir else None

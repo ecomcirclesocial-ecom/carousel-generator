@@ -1,0 +1,39 @@
+# Secrets
+.env
+.env.local
+*.env
+
+# Cache (datos scrapeados, foto temporales)
+cache/
+
+# Output (carruseles generados — excepto examples/)
+output/
+
+# Foto personal del owner — los users contribuyen las suyas
+assets/nain.jpg
+assets/*.jpeg
+assets/*.jpg
+assets/*.png
+!assets/.gitkeep
+
+# Presets personales (usuarios scrapean sus propios creadores)
+presets/*.json
+!presets/.gitkeep
+!presets/community/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+.pytest_cache/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/
+*.swp

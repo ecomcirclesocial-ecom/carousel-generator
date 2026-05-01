@@ -1,0 +1,8 @@
+apify-client
+playwright
+jinja2
+Pillow
+click
+python-dotenv
+aiohttp
+rich

@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="{{ idioma | default('es') }}">
+<head>
+<meta charset="UTF-8">
+<title>slide-{{ n }}</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&family=Caveat:wght@500;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --fg: #FFFFFF;
+    --fg-dim: rgba(255,255,255,0.65);
+    --accent: {{ accent | default('#FF6B3D') }};
+    --accent-soft: {{ accent_soft | default('#E5734A') }};
+    --terminal-bg: rgba(10,10,10,0.92);
+    --folder-blue: #5BB8E8;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    width: 1080px; height: 1350px;
+    background: #0A0A0A;
+    color: var(--fg);
+    font-family: 'Inter', -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow: hidden;
+  }
+  {% if photo_data_uri %}
+  .photo-bg {
+    position: absolute; inset: 0;
+    background-image: url("{{ photo_data_uri }}");
+    background-size: cover;
+    background-position: center right;
+  }
+  .overlay {
+    position: absolute; inset: 0;
+    background:
+      linear-gradient(to right, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.42) 50%, rgba(0,0,0,0.20) 100%),
+      linear-gradient(to bottom, rgba(0,0,0,0.30) 0%, rgba(0,0,0,0.10) 50%, rgba(0,0,0,0.50) 100%);
+  }
+  {% endif %}
+  .slide {
+    position: relative;
+    width: 1080px; height: 1350px;
+    padding: 80px 70px;
+    display: flex; flex-direction: column;
+  }
+  .meta {
+    position: absolute;
+    bottom: 40px; left: 70px; right: 70px;
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 22px; color: var(--fg-dim);
+    font-weight: 500; letter-spacing: 0.04em;
+  }
+  .handle { text-transform: lowercase; letter-spacing: 0; }
+
+  /* HOOK */
+  .hook-headline {
+    font-size: 116px;
+    font-weight: 900;
+    line-height: 0.96;
+    letter-spacing: -0.03em;
+    color: var(--fg);
+    text-wrap: balance;
+    max-width: 820px;
+    margin-top: 30px;
+    text-shadow: 0 4px 30px rgba(0,0,0,0.5);
+  }
+  .sparkle-inline {
+    display: inline-block;
+    width: 78px; height: 78px;
+    vertical-align: middle;
+    margin-left: 8px;
+    filter: drop-shadow(0 4px 12px rgba(0,0,0,0.5));
+  }
+  .hook-folders {
+    display: flex; gap: 22px;
+    margin-top: auto; margin-bottom: 90px;
+    align-self: flex-start;
+  }
+  .folder-small { width: 170px; height: 138px; filter: drop-shadow(0 8px 20px rgba(0,0,0,0.5)); }
+  .folder-small:nth-child(1) { transform: rotate(-4deg); }
+  .folder-small:nth-child(3) { transform: rotate(4deg); }
+
+  /* PAIN */
+  .pain-headline {
+    font-size: 92px;
+    font-weight: 800;
+    line-height: 1.02;
+    letter-spacing: -0.025em;
+    color: var(--fg);
+    text-wrap: balance;
+    max-width: 760px;
+    margin-top: 30px;
+    text-shadow: 0 4px 30px rgba(0,0,0,0.6);
+  }
+  .pain-headline .accent { color: var(--accent); }
+  .pain-body {
+    margin-top: auto;
+    margin-bottom: 30px;
+    background: var(--terminal-bg);
+    backdrop-filter: blur(8px);
+    border-radius: 32px;
+    padding: 44px 44px;
+    max-width: 880px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    font-size: 32px;
+    font-weight: 400;
+    line-height: 1.4;
+    color: var(--fg);
+  }
+  .pain-body .kw { color: var(--accent-soft); font-weight: 500; }
+
+  /* VALUE / CARD */
+  .value-num {
+    font-family: 'Inter', sans-serif;
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--accent);
+    letter-spacing: 0.06em;
+    margin-bottom: 14px;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+  }
+  .card-headline-wrap {
+    position: relative;
+    margin-top: 8px;
+    padding-bottom: 28px;
+    max-width: 760px;
+  }
+  .card-headline {
+    font-size: 96px;
+    font-weight: 800;
+    line-height: 1.0;
+    letter-spacing: -0.03em;
+    color: var(--fg);
+    text-wrap: balance;
+    text-shadow: 0 4px 30px rgba(0,0,0,0.6);
+  }
+  .underline-svg {
+    position: absolute;
+    left: -8px; bottom: -16px;
+    width: 100%; max-width: 660px;
+    height: 50px;
+    pointer-events: none;
+    filter: drop-shadow(0 3px 10px rgba(0,0,0,0.4));
+  }
+  .terminal-card {
+    margin-top: auto; margin-bottom: 30px;
+    background: var(--terminal-bg);
+    backdrop-filter: blur(8px);
+    border-radius: 32px;
+    padding: 50px 48px;
+    max-width: 880px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+  }
+  .terminal-label {
+    font-family: 'Caveat', cursive;
+    font-size: 40px;
+    font-weight: 600;
+    color: var(--fg);
+    line-height: 1;
+    display: inline-block;
+  }
+  .terminal-arrow {
+    width: 44px; height: 54px;
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 10px;
+  }
+  .terminal-body {
+    font-family: 'JetBrains Mono', 'IBM Plex Mono', ui-monospace, monospace;
+    font-size: 26px;
+    font-weight: 400;
+    line-height: 1.55;
+    color: var(--fg);
+    margin-top: 14px;
+    letter-spacing: -0.01em;
+    white-space: pre-wrap;
+  }
+  .terminal-body .kw { color: var(--accent-soft); }
+
+  /* RECAP */
+  .recap-headline {
+    font-size: 92px;
+    font-weight: 900;
+    line-height: 0.98;
+    letter-spacing: -0.03em;
+    color: var(--fg);
+    margin-top: 30px;
+    text-shadow: 0 4px 30px rgba(0,0,0,0.5);
+    max-width: 760px;
+  }
+  .recap-list {
+    margin-top: 50px;
+    list-style: none;
+    counter-reset: recap;
+    max-width: 760px;
+  }
+  .recap-list li {
+    counter-increment: recap;
+    font-family: 'Inter', sans-serif;
+    font-size: 36px;
+    font-weight: 600;
+    line-height: 1.3;
+    color: var(--fg);
+    padding: 18px 0 18px 88px;
+    position: relative;
+    border-bottom: 1px solid rgba(255,255,255,0.12);
+    text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+  }
+  .recap-list li:last-child { border-bottom: 0; }
+  .recap-list li::before {
+    content: counter(recap, decimal-leading-zero);
+    position: absolute;
+    left: 0; top: 18px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 36px;
+    font-weight: 700;
+    color: var(--accent);
+    width: 70px;
+  }
+  .recap-save {
+    margin-top: auto;
+    margin-bottom: 30px;
+    font-family: 'Caveat', cursive;
+    font-size: 50px;
+    font-weight: 700;
+    color: var(--fg);
+    text-shadow: 0 3px 10px rgba(0,0,0,0.6);
+  }
+  .recap-save .accent { color: var(--accent); }
+
+  /* CTA */
+  .cta-headline {
+    font-size: 100px;
+    font-weight: 900;
+    line-height: 0.98;
+    letter-spacing: -0.03em;
+    color: var(--fg);
+    text-wrap: balance;
+    margin-top: 20px;
+    max-width: 780px;
+    text-shadow: 0 4px 30px rgba(0,0,0,0.6);
+  }
+  .cta-folders {
+    display: flex;
+    margin-top: 40px;
+    margin-bottom: 20px;
+    align-self: flex-start;
+    height: 200px;
+  }
+  .folder-mid {
+    width: 240px; height: 190px;
+    margin: 0 -18px;
+    filter: drop-shadow(0 12px 28px rgba(0,0,0,0.5));
+  }
+  .folder-mid:nth-child(1) { transform: rotate(-8deg) translateY(12px); z-index: 1; }
+  .folder-mid:nth-child(2) { transform: rotate(0deg); z-index: 3; }
+  .folder-mid:nth-child(3) { transform: rotate(8deg) translateY(12px); z-index: 1; }
+  .cta-handwritten {
+    margin-top: auto;
+    margin-bottom: 30px;
+    font-family: 'Caveat', cursive;
+    font-size: 56px;
+    font-weight: 700;
+    color: var(--fg);
+    line-height: 1.2;
+    max-width: 720px;
+    text-shadow: 0 3px 10px rgba(0,0,0,0.5);
+  }
+  .cta-handwritten .accent { color: var(--accent); }
+</style>
+</head>
+<body>
+{% if photo_data_uri %}
+<div class="photo-bg"></div>
+<div class="overlay"></div>
+{% endif %}
+
+<div class="slide">
+
+{% if role == "hook" %}
+  <h1 class="hook-headline">{{ headline }}<svg class="sparkle-inline" viewBox="0 0 100 100"><path d="M50 4 C52 38 62 48 96 50 C62 52 52 62 50 96 C48 62 38 52 4 50 C38 48 48 38 50 4 Z" fill="{{ accent | default('#FF6B3D') }}"/></svg></h1>
+  <div class="hook-folders">
+    {% for i in [1, 2, 3] %}
+    <svg class="folder-small" viewBox="0 0 200 160">
+      <defs><linearGradient id="fg{{ n }}{{ i }}" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#7CC8EA"/><stop offset="100%" stop-color="#5BB8E8"/></linearGradient></defs>
+      <path d="M 12 32 Q 12 22 22 22 L 70 22 Q 78 22 82 28 L 90 40 L 178 40 Q 188 40 188 50 L 188 144 Q 188 154 178 154 L 22 154 Q 12 154 12 144 Z" fill="url(#fg{{ n }}{{ i }})" stroke="#3A9BCC" stroke-width="1.5"/>
+      <text x="100" y="115" text-anchor="middle" fill="#3A9BCC" font-family="Inter" font-size="64" font-weight="800" opacity="0.55">{{ i }}</text>
+    </svg>
+    {% endfor %}
+  </div>
+
+{% elif role == "pain" %}
+  <h1 class="pain-headline">{{ headline | safe }}</h1>
+  {% if body %}<div class="pain-body">{{ body | safe }}</div>{% endif %}
+
+{% elif role == "value" %}
+  <span class="value-num">{{ "%02d" % (n - 2) }} / {{ value_total | default(5) }}</span>
+  <div class="card-headline-wrap">
+    <h1 class="card-headline">{{ headline | default(title) }}</h1>
+    <svg class="underline-svg" viewBox="0 0 1000 60" preserveAspectRatio="none">
+      <path d="M 8 32 Q 200 22 420 30 T 820 28 Q 920 28 992 24" stroke="{{ accent | default('#FF6B3D') }}" stroke-width="14" fill="none" stroke-linecap="round" opacity="0.95"/>
+    </svg>
+  </div>
+  {% if body %}
+  <div class="terminal-card">
+    <span class="terminal-label">{{ terminal_label | default('Cómo aplicarlo') }}</span>
+    <svg class="terminal-arrow" viewBox="0 0 50 60">
+      <path d="M 25 4 Q 14 18 22 32 Q 30 46 22 56" stroke="#FFFFFF" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <path d="M 14 48 L 22 56 L 30 48" stroke="#FFFFFF" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <p class="terminal-body">{{ body | safe }}</p>
+  </div>
+  {% endif %}
+
+{% elif role == "recap" %}
+  <h1 class="recap-headline">{{ headline | default('Recapitulando') }}</h1>
+  <ol class="recap-list">
+    {% for item in items %}<li>{{ item }}</li>{% endfor %}
+  </ol>
+  <p class="recap-save">Guarda esto<span class="accent">.</span></p>
+
+{% elif role == "cta" %}
+  <h1 class="cta-headline">{{ headline }}</h1>
+  <div class="cta-folders">
+    {% for i in [1, 2, 3] %}
+    <svg class="folder-mid" viewBox="0 0 360 290">
+      <defs><linearGradient id="fb{{ n }}{{ i }}" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#7CC8EA"/><stop offset="100%" stop-color="#5BB8E8"/></linearGradient></defs>
+      <path d="M 20 56 Q 20 40 36 40 L 130 40 Q 142 40 148 50 L 162 70 L 324 70 Q 340 70 340 86 L 340 258 Q 340 274 324 274 L 36 274 Q 20 274 20 258 Z" fill="url(#fb{{ n }}{{ i }})" stroke="#3A9BCC" stroke-width="2"/>
+    </svg>
+    {% endfor %}
+  </div>
+  {% if body %}<p class="cta-handwritten">{{ body | safe }}</p>{% endif %}
+{% endif %}
+
+  <div class="meta">
+    <span class="slide-num">{{ "%02d" % n }} / {{ "%02d" % total }}</span>
+    <span class="handle">{{ handle | default('@ecomcircle') }}</span>
+  </div>
+</div>
+</body>
+</html>

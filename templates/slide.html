@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>slide-{{ n }}</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Serif:wght@400;500;600;700&family=Playfair+Display:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: {{ palette.background }};
+    --fg: {{ palette.text_primary }};
+    --fg-secondary: {{ palette.text_secondary }};
+    --accent: {{ palette.accent }};
+    --font-stack: {{ font_stack }};
+    --headline-size: {{ headline_size }}px;
+    --body-size: {{ body_size }}px;
+    --letter-spacing: {{ letter_spacing }};
+    --text-transform: {{ text_transform }};
+    --align: {{ alignment }};
+    --justify: {{ justify }};
+    --weight: {{ weight }};
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    width: 1080px;
+    height: 1350px;
+    background: var(--bg);
+    color: var(--fg);
+    font-family: var(--font-stack);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow: hidden;
+  }
+  .slide {
+    width: 1080px;
+    height: 1350px;
+    padding: 90px;
+    display: flex;
+    flex-direction: column;
+    justify-content: var(--justify);
+    align-items: var(--align);
+    position: relative;
+  }
+  .content {
+    width: 100%;
+    text-align: {{ text_align }};
+  }
+  .headline {
+    font-size: var(--headline-size);
+    font-weight: var(--weight);
+    line-height: 1.08;
+    letter-spacing: var(--letter-spacing);
+    text-transform: var(--text-transform);
+    color: var(--fg);
+    {% if role == "hook" %}
+    text-wrap: balance;
+    {% endif %}
+  }
+  .body {
+    margin-top: 32px;
+    font-size: var(--body-size);
+    font-weight: 400;
+    line-height: 1.4;
+    letter-spacing: 0;
+    text-transform: none;
+    color: var(--fg-secondary);
+  }
+  .meta {
+    position: absolute;
+    bottom: 48px;
+    left: 90px;
+    right: 90px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 22px;
+    color: var(--fg-secondary);
+    opacity: 0.55;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+  }
+  .accent-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 6px;
+    width: 100%;
+    background: var(--accent);
+    opacity: {{ accent_opacity }};
+  }
+  .slide-num {
+    font-variant-numeric: tabular-nums;
+  }
+  .handle {
+    text-transform: lowercase;
+    letter-spacing: 0;
+  }
+</style>
+</head>
+<body>
+<div class="slide">
+  {% if show_accent_bar %}<div class="accent-bar"></div>{% endif %}
+  <div class="content">
+    <h1 class="headline">{{ headline }}</h1>
+    {% if body %}<p class="body">{{ body }}</p>{% endif %}
+  </div>
+  <div class="meta">
+    <span class="slide-num">{{ "%02d" % n }} / {{ "%02d" % total }}</span>
+    <span class="handle">@ecomcircle</span>
+  </div>
+</div>
+</body>
+</html>

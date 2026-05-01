@@ -1,0 +1,67 @@
+{
+  "tema": "Errores que matan tu primera tienda de dropshipping",
+  "cta_word": "DROPI",
+  "idioma": "es",
+  "slides": [
+    {
+      "n": 1,
+      "role": "hook",
+      "headline": "Tu tienda muere por esto",
+      "body": ""
+    },
+    {
+      "n": 2,
+      "role": "pain",
+      "headline": "Si llevas semanas sin ventas",
+      "body": "No es el algoritmo, son **errores básicos** que casi nadie te dice en voz alta."
+    },
+    {
+      "n": 3,
+      "role": "value",
+      "title": "Vender lo que a ti te gusta",
+      "body": "El producto no se elige por gusto, se **valida con datos**.\nMira lo que ya está vendiendo en Dropi antes de subirlo.\n\nEjemplo: te enamoras de una lámpara estética con **0 pedidos** en la plataforma y la subes igual."
+    },
+    {
+      "n": 4,
+      "role": "value",
+      "title": "Copiar la tienda del vecino",
+      "body": "Clonar fotos, precios y descripción te deja **sin diferencial**.\nEl cliente compra a quien le explica mejor el beneficio.\n\nEjemplo: 200 tiendas con la misma foto del proyector y tú compitiendo solo por **bajar el precio**."
+    },
+    {
+      "n": 5,
+      "role": "value",
+      "title": "Gastar en ads sin oferta clara",
+      "body": "Sin oferta no hay campaña que aguante.\nPrimero arma el **combo, el envío y la garantía**, después prendes Meta.\n\nEjemplo: quemas 300 mil pesos en ads y la landing solo dice precio, sin **razón para comprar hoy**."
+    },
+    {
+      "n": 6,
+      "role": "value",
+      "title": "No contestar WhatsApp rápido",
+      "body": "En Colombia el cliente decide en **minutos**, no en horas.\nCada mensaje sin responder es un pedido que se va a otra tienda.\n\nEjemplo: llega el lead a las 8 pm, le respondes al otro día y ya compró en otro link."
+    },
+    {
+      "n": 7,
+      "role": "value",
+      "title": "Rendirte antes del día 30",
+      "body": "La primera tienda casi nunca pega, pero te enseña a leer **métricas reales**.\nEl que aguanta el primer mes con disciplina, encuentra el **producto ganador**.\n\nEjemplo: cierras la tienda en el día 12 sin haber probado ni 3 creativos distintos."
+    },
+    {
+      "n": 8,
+      "role": "recap",
+      "headline": "Recapitulando",
+      "items": [
+        "Vender lo que a ti te gusta",
+        "Copiar la tienda del vecino",
+        "Gastar en ads sin oferta clara",
+        "No contestar WhatsApp rápido",
+        "Rendirte antes del día 30"
+      ]
+    },
+    {
+      "n": 9,
+      "role": "cta",
+      "headline": "¿Quieres la guía completa?",
+      "body": "Comenta \"DROPI\" y te lo envío"
+    }
+  ]
+}
